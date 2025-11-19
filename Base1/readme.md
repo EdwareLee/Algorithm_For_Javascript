@@ -127,6 +127,80 @@ return result;
 ```
 
 - 16. 最接近的三数之和（Medium）
+- 题干
+- 给你一个整数数组 nums 和一个目标值 target，请你从数组里找三个数，算出它们的和，这个和要尽可能接近 target。最后返回这个最接近的和
+···js
+var threeSumClosest = (nums,target) => {
+    // 1.依旧从小到大排序进行夹逼
+    nums.sort((a,b) => a - b);
+    const n = nums.length;
+
+    // 2.定义最开始的closestSum 后续再做更新
+    let closestSum = nums[0] + nums[1] + nums[2];
+
+    // 进行数组的遍历，固定一个数，然后再不断循环直到找到最接近的结果
+    for (let i = 0; i < n - 2; i++) {
+        // 定义左右指针进行加逼
+        let left = i + 1;
+        let right = n - 1;
+
+        // 移动双指针进行找最合适的数
+        while (left < right) {
+            const currentSum = nums[i] + nums[left] + nums[right];
+
+            // 4.判断当前的currentSum是否比之前的closeSum更加接近
+            if (Math.abs(currentSum - target) < Math.abs(closestSum - target)) {
+                closestSum = currentSum;
+            }
+
+            // 5.根据当前和 与 target 的关系，移动指针
+            if (currentSum < target) {
+                left++;
+            } else if (currentSum > target) {
+                right--;
+            } else {
+                return currentSum;
+            }
+        }
+    }
+
+    return closestSum;
+}
+```
+- 题解
+- 首先我们采用15题的思路进行参考，先做从小到大的排序方便我们采用左右指针的方式进行排序
+```js
+- 题解
+- 首先我们采用15题的思路进行参考，先做从小到大的排序方便我们采用左右指针的方式进行排序
+```
+- 然后定义一个最开始的closeSum，后期再继续做更新
+- 然后定义for循环，固定一个i=0开始，然后定义左右指针，不断夹逼，从i=0，开始左右指针不断继续向中间靠拢
+
+```js
+for (let i = 0; i < n - 2; i++) {
+ let left = i + 1;
+ let right = n - 1;    
+}
+```
+- 利用while循环，使得当left<right时候，继续在除了i之外的剩下和数据中进行夹逼，并且同时定义目前的currentSum进行比较，当合适的时候，则进行当前closeSum的替换，此刻closeSum是公有变量，而currentSum三私有变量，仅在当前while循环中有效，所以后期我们需要返回currentSum
+```js
+while (left < right) {
+    const currentSum = nums[i] + nums[left] + nums[right];
+    
+    if (Math.abs(currentSum - target) < Math.abs(closseSum - target)) {
+        closeSum = currentSum;    
+    }
+    
+    if (currentSum < target) {
+        left++;    
+    } else if (currentSum > target) {
+        right--;    
+    } else {
+        return currentSum;    
+    }
+}
+```
+- 最后说在while循环外进行closesum的返回，此刻threeSumClose为一个函数，所以得返回一个值，才能被外部调用
 
 - 18. 四数之和（Medium）
 - 26. 删除有序数组中的重复项（Easy，双指针基础）
