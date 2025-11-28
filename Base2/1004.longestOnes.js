@@ -1,0 +1,3 @@
+const longestOnes = (nums,k) => {
+    
+}
